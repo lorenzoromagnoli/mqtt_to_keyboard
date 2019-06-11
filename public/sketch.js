@@ -1,73 +1,79 @@
-const easerCount = 500
-const easing = 0.05
-const diameter = 10
-let easer = []
+const { ipcRenderer } = require( 'electron' )
+
+
+let mqttChannel;
+let input;
+let button;
+let enablekeyboardCheck;
+
+let receivedMsg = "";
 
 function setup() {
-  createCanvas(windowWidth, windowHeight)
-  // console.log(`${windowWidth}, ${windowHeight}`)
-  noStroke()
-  background(255)
 
-  for (let i = 0; i < easerCount; i++) {
-    let e = new Easer(width / 2, height / 2, diameter, easing)
-    easer.push(e)
-  }
+
+  createCanvas( windowWidth, windowHeight )
+  console.log( `${windowWidth}, ${windowHeight}` )
+  noStroke()
+
+  input = createInput();
+  input.position( 20, 65 );
+
+  button = createButton( 'submit' );
+  button.position( 20, 90 );
+  button.mousePressed( connect );
+
+  enablekeyboardCheck = createCheckbox( 'enableKeyboard', false );
+  enablekeyboardCheck.position( 20, 120 );
+
+  enablekeyboardCheck.changed( toggleKeyboard );
+
+  setInterval( checkConnectionStatus, 5000 );
+
+  textSize( 32 );
+  fill( 255 );
+
 }
 
 function draw() {
-  background(255)
-
-  for (let i = 0; i < easer.length; i++) {
-    easer[i].update()
-    easer[i].render()
-  }
+  background( 0 );
+  text( receivedMsg, width / 2, height / 2 );
 }
 
-function mousePressed() {
-  for (let i = 0; i < easer.length; i++) {
-    easer[i].setTarget(mouseX, mouseY)
-  }
-}
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
+  resizeCanvas( windowWidth, windowHeight )
 }
 
+function connect() {
+  mqttChannel = input.value();
+  console.log( "connecting to broker on channel: " + mqttChannel );
+  ipcRenderer.sendSync( 'connect', mqttChannel )
+}
 
-function Easer(xpos, ypos, diameter, newEasing) {
-  this.x = xpos
-  this.y = ypos
-  this.targetX = this.x
-  this.targetY = this.y
-  this.d = diameter
-  this.ease = newEasing
-  this.clr = color(random(0, 255), random(0, 255), random(0, 255), 127)
+function checkConnectionStatus() {
+  console.log( "connected:" + ipcRenderer.sendSync( 'status' ) );
+}
 
-  this.render = function() {
-    fill(this.clr)
-    ellipse(this.x, this.y, this.d, this.d)
-  }
-
-  this.update = function() {
-    let dx = this.targetX - this.x
-    let dy = this.targetY - this.y
-    if (abs(dx) > 0.1 || abs(dy) > 0.1) {
-      this.x += dx * this.ease
-      this.y += dy * this.ease
-    } else {
-      this.setRandomTarget()
-    }
-  }
-
-  this.setTarget = function(xpos, ypos) {
-    this.targetX = xpos
-    this.targetY = ypos
-  }
-
-  this.setRandomTarget = function() {
-    this.targetX = random(0, width)
-    this.targetY = random(0, height)
+function toggleKeyboard() {
+  if ( this.checked() ) {
+    console.log( 'enabling keyboard' );
+    ipcRenderer.send( 'keyboard', true )
+  } else {
+    console.log( 'disabling keyboard' );
+    ipcRenderer.send( 'keyboard', false )
   }
 }
 
+ipcRenderer.on( 'asynchronous-reply', ( event, arg ) => {
+  console.log( arg ) // prints "pong"
+} )
+
+ipcRenderer.on( 'status', ( event, message ) => {
+  console.log( message ) // Prints 'whoooooooh!'
+} )
+
+ipcRenderer.on( 'received', ( event, message ) => {
+  receivedChar = String.fromCharCode( message[ 0 ] );
+  console.log( receivedChar ) // Prints 'whoooooooh!'
+  receivedMsg = receivedChar;
+} )
