@@ -1,5 +1,5 @@
 {
-    "name": "electron-p5js-template",
+    "name": "mqttToKeys",
     "version": "1.0.0",
     "description": "A minimal Electron application running a p5.js sketch",
     "main": "main.js",
