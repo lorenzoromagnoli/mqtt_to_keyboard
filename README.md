@@ -9,6 +9,7 @@ developed for the ML@school workshop.
 1) Launch the program
 2) Fill in the text field the "channel" you want to connect to (e.g. "/1234")
 3) check the example p5.js code [here](https://editor.p5js.org/10r3n20/sketches/SyoYaCrjQ) to understand how to connect to mqtt and send messages
+4) [Wanna see the messages being transmitted? ](https://shiftr.io/lorenzo/ml-school)
 
 ## Setup electron app for development
 
