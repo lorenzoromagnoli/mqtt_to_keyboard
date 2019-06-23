@@ -25,8 +25,8 @@ function createWindow() {
 
   // Create the browser window.
   mainWindow = new BrowserWindow( {
-    width: 800,
-    height: 600,
+    width: 500,
+    height: 500,
     // center: true,
     // frame: false,
     // resizable: false,
@@ -42,7 +42,7 @@ function createWindow() {
   } ) )
 
   // Open the DevTools on start
-  mainWindow.webContents.openDevTools( "undock" )
+  //mainWindow.webContents.openDevTools( "undock" )
 
   // Emitted when the window is closed
   mainWindow.on( 'closed', function() {
@@ -124,8 +124,23 @@ client.on( 'message', function( topic, message ) {
   console.log( 'new message:', topic, message.toString() );
   mainWindow.webContents.send( 'received', message );
 
+
   if ( keyboardEnabled ) {
-    robot.typeString( message.toString() );
+    if ( message == 'UP' || message == 'up' ) {
+      robot.keyTap( "up" );
+    } else if ( message == 'DOWN' ) {
+      robot.keyTap( "down" );
+    } else if ( message == 'LEFT' ) {
+      robot.keyTap( "left" );
+    } else if ( message == 'RIGHT' ) {
+      robot.keyTap( "right" );
+    } else if ( message == 'ENTER' ) {
+      robot.keyTap( "enter" );
+    } else if ( message == 'SPACE' ) {
+      robot.keyTap( "space" );
+    } else {
+      robot.typeString( message.toString() );
+    }
   }
 
 } );

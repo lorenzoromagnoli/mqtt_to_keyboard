@@ -6,11 +6,35 @@
     <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
     <script language="javascript" type="text/javascript" src="libraries/p5.dom.min.js"></script>
     <!--<script language="javascript" src="libraries/p5.sound.js"></script>-->
-    <script language="javascript" type="text/javascript" src="sketch.js"></script>
+    <script language="javascript" type="text/javascript" src="floatingLabel.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+
     <!-- this line removes any default padding and style. you might only need one of these values set. -->
-    <style> body {padding: 0; margin: 0; background: #000000; overflow-x:hidden; overflow-y: hidden} </style>
+    <link rel="stylesheet" type="text/css" href="stile.css">
+
+
+
   </head>
   <body>
+
+    <h1>👻 ghost_Keyboard 🤖</h1>
+    <div class="settings align-center">
+      <span id="channel-label">I'll receive commands on channel</span>
+      <br>
+      <input type="text" id="channel-id"></input>
+      <br>
+      <input type="button" id="channel-subscribe" value="connect"></input>
+    </div>
+    <div class="settings align-center">
+      <br>
+      <span id="channel-label">Enable keyboard</span>
+      <input type="checkbox" id="enable-keyboard" ></input>
+    </div>
+    <div id='canvasContainer'></div>
+
+
+    <script language="javascript" type="text/javascript" src="sketch.js"></script>
 
   </body>
 

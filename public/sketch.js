@@ -1,47 +1,61 @@
 const { ipcRenderer } = require( 'electron' )
 
-
 let mqttChannel;
 let input;
 let button;
 let enablekeyboardCheck;
 
 let receivedMsg = "";
+let floatingLabels = [];
+
+let myFont;
+
+let canvas;
+
+function preload() {
+  myFont = loadFont( 'assets/RobotoMono-Bold.ttf' );
+}
 
 function setup() {
-
-
-  createCanvas( windowWidth, windowHeight )
-  console.log( `${windowWidth}, ${windowHeight}` )
+  canvas = createCanvas( 400, 300 );
+  canvas.parent( 'canvasContainer' )
   noStroke()
 
-  input = createInput();
-  input.position( 20, 65 );
+  input = select( '#channel-id' );
 
-  button = createButton( 'submit' );
-  button.position( 20, 90 );
+  button = select( '#channel-subscribe' );
   button.mousePressed( connect );
 
-  enablekeyboardCheck = createCheckbox( 'enableKeyboard', false );
-  enablekeyboardCheck.position( 20, 120 );
-
+  enablekeyboardCheck = select( '#enable-keyboard' );
   enablekeyboardCheck.changed( toggleKeyboard );
 
   setInterval( checkConnectionStatus, 5000 );
 
-  textSize( 32 );
   fill( 255 );
-
+  textAlign( CENTER );
 }
+
+function updateFloatingLabelsAray() {
+  for ( let i = 0; i < floatingLabels.length; i++ ) {
+    floatingLabels[ i ].update();
+    if ( floatingLabels[ i ].size > 0 ) {
+      floatingLabels[ i ].draw();
+    } else {
+      floatingLabels.splice( i, 1 );
+    }
+  }
+}
+
 
 function draw() {
   background( 0 );
-  text( receivedMsg, width / 2, height / 2 );
+  //text( receivedMsg, width / 2, height / 2 );
+  updateFloatingLabelsAray();
 }
 
 
 function windowResized() {
-  resizeCanvas( windowWidth, windowHeight )
+  //  resizeCanvas( windowWidth, windowHeight )
 }
 
 function connect() {
@@ -73,7 +87,14 @@ ipcRenderer.on( 'status', ( event, message ) => {
 } )
 
 ipcRenderer.on( 'received', ( event, message ) => {
-  receivedChar = String.fromCharCode( message[ 0 ] );
+
+
+  //receivedChar = String.fromCharCode( message[ 0 ] );
+  receivedChar = message;
+
+
   console.log( receivedChar ) // Prints 'whoooooooh!'
   receivedMsg = receivedChar;
+  let floatingLabel = new FloatingLabel( receivedMsg );
+  floatingLabels.push( floatingLabel );
 } )
