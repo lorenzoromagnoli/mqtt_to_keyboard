@@ -126,18 +126,73 @@ client.on( 'message', function( topic, message ) {
 
 
   if ( keyboardEnabled ) {
+    //up key
     if ( message == 'UP' || message == 'up' ) {
       robot.keyTap( "up" );
-    } else if ( message == 'DOWN' ) {
+    } else if ( message == 'UP_DOWN' ) {
+      robot.keyToggle( 'up', 'down' );
+    } else if ( message == 'UP_UP' ) {
+      robot.keyToggle( 'up', 'up' );
+    }
+    //down key
+    if ( message == 'DOWN' || message == 'down' ) {
       robot.keyTap( "down" );
-    } else if ( message == 'LEFT' ) {
+    } else if ( message == 'DOWN_DOWN' ) {
+      robot.keyToggle( 'down', 'down' );
+    } else if ( message == 'DOWN_UP' ) {
+      robot.keyToggle( 'down', 'up' );
+    }
+
+    //left key
+    if ( message == 'LEFT' || message == 'left' ) {
       robot.keyTap( "left" );
-    } else if ( message == 'RIGHT' ) {
+    } else if ( message == 'LEFT_DOWN' ) {
+      robot.keyToggle( 'left', 'down' );
+    } else if ( message == 'LEFT_UP' ) {
+      robot.keyToggle( 'left', 'up' );
+    }
+
+    //left key
+    if ( message == 'RIGHT' || message == 'right' ) {
       robot.keyTap( "right" );
-    } else if ( message == 'ENTER' ) {
+    } else if ( message == 'RIGHT_DOWN' ) {
+      robot.keyToggle( 'right', 'down' );
+    } else if ( message == 'RIGHT_UP' ) {
+      robot.keyToggle( 'right', 'up' );
+    }
+
+    //enter key
+    if ( message == 'ENTER' || message == 'enter' ) {
       robot.keyTap( "enter" );
-    } else if ( message == 'SPACE' ) {
+    } else if ( message == 'ENTER_DOWN' ) {
+      robot.keyToggle( 'enter', 'down' );
+    } else if ( message == 'ENTER_UP' ) {
+      robot.keyToggle( 'enter', 'up' );
+    }
+
+    //space key
+    if ( message == 'SPACE' || message == 'space' ) {
       robot.keyTap( "space" );
+    } else if ( message == 'SPACE_DOWN' ) {
+      robot.keyToggle( 'space', 'down' );
+    } else if ( message == 'SPACE_UP' ) {
+      robot.keyToggle( 'space', 'up' );
+    }
+
+
+    //  altri tasti
+    else if ( message == 'A_DOWN' ) {
+      robot.keyToggle( 'a', 'down' );
+    } else if ( message == 'A_UP' ) {
+      robot.keyToggle( 'a', 'up' );
+    } else if ( message == 'D_UP' ) {
+      robot.keyToggle( 'd', 'up' );
+    } else if ( message == 'D_DOWN' ) {
+      robot.keyToggle( 'd', 'down' );
+    } else if ( message == 'SPACE_DOWN' ) {
+      robot.keyToggle( 'space', 'down' );
+    } else if ( message == 'SPACE_UP' ) {
+      robot.keyToggle( 'space', 'up' );
     } else {
       robot.typeString( message.toString() );
     }
